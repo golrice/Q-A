@@ -7,6 +7,7 @@ class Matrix
 {
 private:
     // 定义三乘三的矩阵
+    // 这里longlong防止数据溢出
     array<array<long long, 3>, 3> _trans_matrix;
 
 public:
@@ -15,6 +16,7 @@ public:
     ~Matrix() = default;
     Matrix operator*(const Matrix &another);
     Matrix operator=(const Matrix &another);
+    // 打印查看结果
     void show(void)
     {
         for (auto &i : _trans_matrix)
@@ -30,6 +32,7 @@ public:
             i.fill(0);
     }
     // 最后矩阵乘出来的结果只需要第一行的和即可
+    // 具体线代推导过程就不写了
     long long value(long long x)
     {
         return _trans_matrix[x][0] + _trans_matrix[x][1] + 2 * _trans_matrix[x][2];
@@ -54,8 +57,10 @@ Matrix::Matrix(const Matrix &a_mx) : _trans_matrix(a_mx._trans_matrix)
 Matrix Matrix::operator*(const Matrix &another)
 {
     Matrix tmp;
+    // 将tmp中所有的值都设为0
     tmp.make_zero();
 
+    // 矩阵相乘
     for (long long i = 0; i < 3; ++i)
     {
         for (long long j = 0; j < 3; ++j)
@@ -84,6 +89,7 @@ Matrix pow(const Matrix &mx, long long n)
 
     if (n % 2 == 0)
     {
+        // 这里的右移等价于n / 2
         Matrix tmp_matrix = pow(mx, n >> 1);
         return tmp_matrix * tmp_matrix;
     }
