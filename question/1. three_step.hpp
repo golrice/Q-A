@@ -16,26 +16,19 @@ public:
     ~Matrix() = default;
     Matrix operator*(const Matrix &another);
     Matrix operator=(const Matrix &another);
-    // 打印查看结果
-    void show(void)
-    {
-        for (auto &i : _trans_matrix)
-        {
-            for (auto j : i)
-                std::cout << j << ' ';
-            std::cout << std::endl;
-        }
-    }
+
     void make_zero(void)
     {
         for (auto &i : _trans_matrix)
             i.fill(0);
     }
+    // 打印当前矩阵中的值
+    friend void show(const Matrix &);
     // 最后矩阵乘出来的结果只需要第一行的和即可
     // 具体线代推导过程就不写了
-    long long value(long long x)
+    friend long long value(const Matrix &mx, int x)
     {
-        return _trans_matrix[x][0] + _trans_matrix[x][1] + 2 * _trans_matrix[x][2];
+        return mx._trans_matrix[x][0] + mx._trans_matrix[x][1] + 2 * mx._trans_matrix[x][2];
     }
 };
 
@@ -80,7 +73,21 @@ Matrix Matrix::operator=(const Matrix &another)
 
     return *this;
 }
-
+// 打印查看结果
+void show(const Matrix &mx)
+{
+    for (auto &i : mx._trans_matrix)
+    {
+        for (auto j : i)
+            std::cout << j << ' ';
+        std::cout << std::endl;
+    }
+}
+friend long long value(const Matrix &mx, int x)
+{
+    return mx._trans_matrix[x][0] + mx._trans_matrix[x][1] + 2 * mx._trans_matrix[x][2];
+}
+}
 Matrix pow(const Matrix &mx, long long n)
 {
     // 这是是随便写的，小于0的时候应该不返回mx
