@@ -24,12 +24,9 @@ public:
     }
     // 打印当前矩阵中的值
     friend void show(const Matrix &);
-    // 最后矩阵乘出来的结果只需要第一行的和即可
-    // 具体线代推导过程就不写了
-    friend long long value(const Matrix &mx, int x)
-    {
-        return mx._trans_matrix[x][0] + mx._trans_matrix[x][1] + 2 * mx._trans_matrix[x][2];
-    }
+    // 获得第x行的值的和
+    friend long long value(const Matrix &mx, int x);
+    friend long long value(const Matrix &mx, array<int, 3> &, int x);
 };
 
 Matrix::Matrix() : _trans_matrix{}
@@ -83,11 +80,19 @@ void show(const Matrix &mx)
         std::cout << std::endl;
     }
 }
-friend long long value(const Matrix &mx, int x)
+
+// 由于这个矩阵是转移矩阵，最后要乘上向量[1,1,2]，所以返回对应系数相乘后的结果是这样的
+long long value(const Matrix &mx, int x)
 {
     return mx._trans_matrix[x][0] + mx._trans_matrix[x][1] + 2 * mx._trans_matrix[x][2];
 }
+
+// 也可以这样设计相乘
+long long value(const Matrix &mx, array<int, 3> &vec, int x)
+{
+    return vec[0] * mx._trans_matrix[x][0] + vec[1] * mx._trans_matrix[x][1] + vec[2] * mx._trans_matrix[x][2];
 }
+
 Matrix pow(const Matrix &mx, long long n)
 {
     // 这是是随便写的，小于0的时候应该不返回mx
