@@ -12,6 +12,7 @@ class Solution
 {
 public:
     ListNode *reverseList(ListNode *head);
+    ListNode *reverseList_recur(ListNode *head);
     void deleteList(ListNode *head);
     void print(ListNode *head);
 };
@@ -46,6 +47,15 @@ ListNode *Solution::reverseList(ListNode *head)
     return prv;
 }
 
+ListNode *reverseList_recur(ListNode *head)
+{
+    if (head == nullptr || head->next == nullptr)
+        return head;
+    ListNode *newHead = reverseList_recur(head->next);
+    head->next->next = newHead;
+    return head;
+}
+
 void Solution::print(ListNode *head)
 {
     ListNode *p = head;
@@ -64,7 +74,7 @@ int main(void)
     ListNode *head = new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4, new ListNode(5)))));
     Solution s;
     s.print(head);
-    head = s.reverseList(head);
+    head = s.reverseList_recur(head);
     s.print(head);
     s.deleteList(head);
     return 0;
